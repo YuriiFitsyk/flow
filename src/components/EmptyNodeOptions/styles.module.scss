@@ -1,0 +1,32 @@
+.container {
+  border-radius: 8px;
+  background: #FFFFFF;
+  padding: 20px;
+  position: absolute;
+  z-index: 2;
+  right: -110px;
+  bottom: -130px;
+}
+
+.option {
+  width: 120px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #727272;
+  border-radius: 10px;
+  color: #000;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: #08979C;
+    color: #08979C
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.text {
+  margin: 0
+}

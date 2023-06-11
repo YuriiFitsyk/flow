@@ -1,0 +1,36 @@
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px
+}
+
+.form {
+  & > :not(:last-child) {
+    margin-bottom: 16px
+  }
+}
+
+.connection {
+  display: flex;
+
+  &_selector {
+    width: 100%;
+
+    & > div {
+      border-radius: 0 !important;
+    }
+  }
+
+  &_icon {
+    color: white;
+    border-radius: 6px 0 0 6px;
+    border: 1px solid #d9d9d9;
+    border-right: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-size: 26px;
+    background: #531754
+  }
+}

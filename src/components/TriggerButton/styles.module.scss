@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  background: #722ED1;
+  position: absolute;
+  border-radius: 50%;
+  right: -36px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #600dd2;
+  }
+}

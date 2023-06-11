@@ -1,0 +1,11 @@
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px
+}
+
+.form {
+  & > :not(:last-child) {
+    margin-bottom: 16px
+  }
+}
