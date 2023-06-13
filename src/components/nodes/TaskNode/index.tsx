@@ -15,7 +15,7 @@ export const TaskNode: FC<ITaskNode> = ({ id, type, xPos, yPos }) => {
 
   const isConnected = !!getEdges().find((e) => e.source === id);
 
-  const onWrapperClick = (e: any) => {
+  const onOverlayClick = (e: any) => {
     if (e.target.id === "overlay") {
       toggleOpen();
     }
@@ -23,7 +23,7 @@ export const TaskNode: FC<ITaskNode> = ({ id, type, xPos, yPos }) => {
 
   return useMemo(() => {
     return (
-      <div className={classes.wrapper} onClick={onWrapperClick}>
+      <div className={classes.wrapper}>
         <div className={classes.container}>
           <Handle
             type="target"
@@ -48,7 +48,17 @@ export const TaskNode: FC<ITaskNode> = ({ id, type, xPos, yPos }) => {
         </div>
 
         <TaskDialog open={open} closeHandler={toggleOpen} />
-        <div id="overlay" className={classes.overlay} />
+
+        <div
+          id="overlay"
+          className={classes.overlay}
+          onClick={onOverlayClick}
+        />
+
+        <div className={classes.text_container}>
+          <h3 className={classes.title}>Task</h3>
+          <p className={classes.text}>Submit income review</p>
+        </div>
       </div>
     );
   }, [isConnected, xPos, yPos, open]);

@@ -1,7 +1,7 @@
 import dagre from "dagre";
 
-const nodeWidth = 98;
-const nodeHeight = 98;
+const nodeWidth = 100;
+const nodeHeight = 100;
 
 export const getLayoutedNodes = (nodes, edges) => {
   const dagreGraph = new dagre.graphlib.Graph();

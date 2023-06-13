@@ -27,6 +27,10 @@ export const EmptyNode: FC<IEmptyNode> = memo(({ id }) => {
           <EmptyNodeOptions id={id} closeHandler={toggleOpenOptions} />
         )}
       </div>
+
+      <div className={classes.text_container}>
+        <h3 className={classes.title}>Unknown</h3>
+      </div>
     </div>
   );
 });

@@ -4,15 +4,15 @@
   justify-content: center;
   background: white;
   border-radius: 50%;
-  width: 98px;
-  height: 98px;
+  width: 100px;
+  height: 100px;
   cursor: pointer;
   position: relative;
 }
 
 .container {
-  width: 88px;
-  height: 88px;
+  width: 90px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,4 +31,25 @@
   inset: 0;
   z-index: 1;
   border-radius: 50%
+}
+
+.text_container {
+  position: absolute;
+  top: 106px;
+  width: 120px;
+  text-align: center;
+  cursor: grab;
+
+}
+
+.title {
+  color: #000000D9;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.text {
+  color: #00000073;
+  font-size: 12px;
 }
