@@ -39,8 +39,8 @@ export const emptyNode = {
 
 export const triggerNode = {
   id: "1",
-  position: { x: 100, y: 400 },
-  data: { label: "1" },
+  position: { x: 0, y: 0 },
+  data: {},
   ...emptyNode,
   type: "triggerNode",
 };

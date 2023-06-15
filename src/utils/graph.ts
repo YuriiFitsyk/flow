@@ -1,4 +1,4 @@
-import dagre from "dagre";
+import * as dagre from "dagre";
 
 const nodeWidth = 100;
 const nodeHeight = 100;

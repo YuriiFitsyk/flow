@@ -9,7 +9,7 @@ import { TrashIcon } from "./TrashIcon";
 import { ChainIcon } from "./ChainIcon";
 import { useReactFlow } from "reactflow";
 import { getLayoutedNodes } from "../../utils/graph";
-import { sharedEdgeProps } from "../../utils/constants";
+import { emptyNode, getId } from "../../utils/constants";
 
 export const ContextMenu: FC<IContextMenu> = ({
   open,
@@ -28,17 +28,18 @@ export const ContextMenu: FC<IContextMenu> = ({
 
   const onDeleteNode = () => {
     const allNodes = getNodes();
-    const nodes = allNodes.filter((n) => n.id !== nodeId);
+    let nodes = allNodes.filter((n) => n.id !== nodeId);
     const allEdges = getEdges();
     const targetEdge = allEdges.find((e) => e.target === nodeId);
     const sourceEdge = allEdges.find((e) => e.source === nodeId);
+    const previousNode = allNodes.find((n) => n.id === targetEdge.source);
     let newEdges = [];
 
     if (sourceEdge) {
       const targetId = sourceEdge.target;
       const sourceId = targetEdge.source;
       const newEdge = {
-        ...sharedEdgeProps,
+        ...targetEdge,
         target: targetId,
         source: sourceId,
         id: `e${targetId}-${sourceId}`,
@@ -49,7 +50,30 @@ export const ContextMenu: FC<IContextMenu> = ({
         newEdge,
       ];
     } else {
-      newEdges = [...allEdges.filter((e) => e.target !== nodeId)];
+      if (previousNode.type === "decisionNode") {
+        const newId = getId();
+        const newPosition = {
+          x: previousNode.position.x + 200,
+          y: previousNode.position.y,
+        };
+        const newNode = {
+          ...emptyNode,
+          id: newId,
+          data: {},
+          position: newPosition,
+        };
+
+        const newEdge = {
+          ...targetEdge,
+          id: `e${previousNode.id}-${newId}`,
+          source: previousNode.id,
+          target: newId,
+        };
+        nodes = [...nodes, newNode];
+        newEdges.push(newEdge);
+      }
+
+      newEdges = [...newEdges, ...allEdges.filter((e) => e.target !== nodeId)];
     }
 
     const { layoutedNodes, layoutedEdges } = getLayoutedNodes(
