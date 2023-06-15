@@ -5,7 +5,7 @@ import { TriggerIcon } from "./TriggerIcon";
 // @ts-ignore
 import classes from "./styles.module.scss";
 import { TriggerButton } from "../../TriggerButton";
-import { EdgesContext } from "../../../App.jsx";
+import { EdgesContext } from "../../../App.js";
 
 export const TriggerNode: FC<ITriggerNode> = ({ id, type, xPos, yPos }) => {
   const edges: Edge[] = useContext(EdgesContext);

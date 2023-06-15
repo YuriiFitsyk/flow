@@ -1,24 +1,35 @@
-import { FC, useMemo, useState } from "react";
-import { Handle, Position, useReactFlow } from "reactflow";
+import { FC, useContext, useMemo, useState } from "react";
+import { Edge, Handle, Position } from "reactflow";
 import { ITaskNode } from "./interface";
 import { TaskIcon } from "./TaskIcon";
 // @ts-ignore
 import classes from "./styles.module.scss";
 import { TriggerButton } from "../../TriggerButton";
 import { TaskDialog } from "../../dialogs/TaskDialog";
+import { ContextMenu } from "../../ContextMenu";
+import { EdgesContext } from "../../../App";
 
 export const TaskNode: FC<ITaskNode> = ({ id, type, xPos, yPos }) => {
-  const { getEdges } = useReactFlow();
-  const [open, setOpen] = useState(false);
+  const edges: Edge[] = useContext(EdgesContext);
+  const isConnected = !!edges.find((e) => e.source === id);
 
-  const toggleOpen = () => setOpen((p) => !p);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openContext, setOpenContext] = useState(false);
+  const [contextPosition, setContextPosition] = useState({ x: 0, y: 0 });
 
-  const isConnected = !!getEdges().find((e) => e.source === id);
+  const toggleOpenDialog = () => setOpenDialog((p) => !p);
+  const toggleOpenContext = () => setOpenContext((p) => !p);
 
   const onOverlayClick = (e: any) => {
     if (e.target.id === "overlay") {
-      toggleOpen();
+      toggleOpenDialog();
     }
+  };
+
+  const onOverlayContext = (e: any) => {
+    e.preventDefault();
+    toggleOpenContext();
+    setContextPosition({ x: e.pageX, y: e.pageY });
   };
 
   return useMemo(() => {
@@ -47,12 +58,19 @@ export const TaskNode: FC<ITaskNode> = ({ id, type, xPos, yPos }) => {
           )}
         </div>
 
-        <TaskDialog open={open} closeHandler={toggleOpen} />
+        <TaskDialog open={openDialog} closeHandler={toggleOpenDialog} />
+        <ContextMenu
+          open={openContext}
+          closeHandler={toggleOpenContext}
+          position={contextPosition}
+          nodeId={id}
+        />
 
         <div
           id="overlay"
           className={classes.overlay}
           onClick={onOverlayClick}
+          onContextMenu={onOverlayContext}
         />
 
         <div className={classes.text_container}>
@@ -61,5 +79,5 @@ export const TaskNode: FC<ITaskNode> = ({ id, type, xPos, yPos }) => {
         </div>
       </div>
     );
-  }, [isConnected, xPos, yPos, open]);
+  }, [isConnected, xPos, yPos, openDialog, openContext, contextPosition]);
 };

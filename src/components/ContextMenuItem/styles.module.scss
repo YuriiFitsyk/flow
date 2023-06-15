@@ -1,0 +1,29 @@
+.container {
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  color: #000000D9;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #eaeaea;
+  }
+
+  &:active {
+    background-color: #dedede;
+  }
+
+}
+
+.text {
+  margin-left: 8px;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.dangerous {
+  color: #FF4D4F
+}
+
