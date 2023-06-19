@@ -23,7 +23,9 @@ export const TriggerButton: FC<ITriggerButton> = ({ type, xPos, yPos, id }) => {
       const newNode = {
         ...emptyNode,
         id: newId,
-        data: {},
+        data: {
+          prevNodeId: id,
+        },
         position: newPosition,
       };
 
@@ -60,14 +62,18 @@ export const TriggerButton: FC<ITriggerButton> = ({ type, xPos, yPos, id }) => {
       const topNode = {
         ...emptyNode,
         id: topId,
-        data: {},
+        data: {
+          prevNodeId: id,
+        },
         position: topPosition,
       };
 
       const bottomNode = {
         ...emptyNode,
         id: bottomId,
-        data: {},
+        data: {
+          prevNodeId: id,
+        },
         position: bottomPosition,
       };
 

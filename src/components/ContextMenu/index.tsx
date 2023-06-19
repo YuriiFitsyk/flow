@@ -28,7 +28,15 @@ export const ContextMenu: FC<IContextMenu> = ({
 
   const onDeleteNode = () => {
     const allNodes = getNodes();
-    let nodes = allNodes.filter((n) => n.id !== nodeId);
+    let currentNode;
+    let nodes = allNodes.filter((node) => {
+      if (node.id === nodeId) {
+        currentNode = node;
+        return false;
+      }
+
+      return true;
+    });
     const allEdges = getEdges();
     const targetEdge = allEdges.find((e) => e.target === nodeId);
     const sourceEdge = allEdges.find((e) => e.source === nodeId);
@@ -52,15 +60,12 @@ export const ContextMenu: FC<IContextMenu> = ({
     } else {
       if (previousNode.type === "decisionNode") {
         const newId = getId();
-        const newPosition = {
-          x: previousNode.position.x + 200,
-          y: previousNode.position.y,
-        };
+
         const newNode = {
-          ...emptyNode,
+          ...currentNode,
           id: newId,
-          data: {},
-          position: newPosition,
+          data: { prevNodeId: previousNode.id },
+          type: "emptyNode",
         };
 
         const newEdge = {
@@ -76,9 +81,91 @@ export const ContextMenu: FC<IContextMenu> = ({
       newEdges = [...newEdges, ...allEdges.filter((e) => e.target !== nodeId)];
     }
 
+    const { layoutedNodes, layoutedEdges } = getLayoutedNodes(nodes, newEdges);
+
+    deleteElements({
+      nodes: allNodes,
+      edges: allEdges,
+    });
+
+    addEdges(layoutedEdges);
+    addNodes(layoutedNodes);
+
+    closeHandler();
+  };
+
+  const onDeleteChain = () => {
+    const allNodes = getNodes();
+    const allEdges = getEdges();
+
+    const sortedNodes = [...allNodes].sort(
+      (a, b) => a.position.x - b.position.x
+    );
+
+    let currentNode;
+
+    const nodePos = sortedNodes.findIndex((node) => {
+      if (node.id === nodeId) {
+        currentNode = node;
+        return true;
+      }
+      return false;
+    });
+
+    const unusedNodes = sortedNodes.splice(0, nodePos);
+    sortedNodes.splice(0, 1);
+
+    const nodesIdsToDelete = [nodeId];
+
+    let prevEdge;
+    let prevNode = unusedNodes.find(
+      (node) => node.id === currentNode.data.prevNodeId
+    );
+
+    const filteredNodes = sortedNodes.filter((node) => {
+      const { id, data } = node;
+
+      if (nodesIdsToDelete.includes(data.prevNodeId)) {
+        nodesIdsToDelete.push(id);
+        return false;
+      }
+
+      return true;
+    });
+
+    const filteredEdges = allEdges.filter((edge) => {
+      if (nodesIdsToDelete.includes(edge.target)) {
+        if (edge.target === nodeId) prevEdge = edge;
+        return false;
+      }
+
+      return true;
+    });
+
+    if (prevNode.type === "decisionNode") {
+      const newId = getId();
+
+      const newNode = {
+        ...currentNode,
+        id: newId,
+        data: { prevNodeId: prevNode.id },
+        type: "emptyNode",
+      };
+
+      const newEdge = {
+        ...prevEdge,
+        id: `e${prevNode.id}-${newId}`,
+        source: prevNode.id,
+        target: newId,
+      };
+
+      filteredNodes.push(newNode);
+      filteredEdges.push(newEdge);
+    }
+
     const { layoutedNodes, layoutedEdges } = getLayoutedNodes(
-      [...nodes],
-      [...newEdges]
+      [...unusedNodes, ...filteredNodes],
+      filteredEdges
     );
 
     deleteElements({
@@ -116,7 +203,7 @@ export const ContextMenu: FC<IContextMenu> = ({
                   text="Delete chain"
                   icon={ChainIcon}
                   isDangerous={true}
-                  action={() => {}}
+                  action={onDeleteChain}
                 />
               </div>
             </div>
