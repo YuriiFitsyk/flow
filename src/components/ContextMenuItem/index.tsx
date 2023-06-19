@@ -2,7 +2,6 @@ import { FC } from "react";
 import { IContextMenuItem } from "./interface";
 //@ts-ignore
 import classes from "./styles.module.scss";
-import * as cs from "classnames";
 
 export const ContextMenuItem: FC<IContextMenuItem> = ({
   text,
@@ -12,10 +11,7 @@ export const ContextMenuItem: FC<IContextMenuItem> = ({
 }) => {
   return (
     <div
-      className={cs({
-        [classes.container]: true,
-        [classes.dangerous]: isDangerous,
-      })}
+      className={`${classes.container} ${isDangerous ? classes.dangerous : ""}`}
       onClick={action}
     >
       <Icon />
