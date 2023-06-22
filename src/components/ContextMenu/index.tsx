@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { PortalWithState } from "react-portal";
 
 import { IContextMenu } from "./interface";
 //@ts-ignore
@@ -10,6 +9,7 @@ import { ChainIcon } from "./ChainIcon";
 import { useReactFlow } from "reactflow";
 import { getLayoutedNodes } from "../../utils/graph";
 import { emptyNode, getId } from "../../utils/constants";
+import { Popover } from "../Popover";
 
 export const ContextMenu: FC<IContextMenu> = ({
   open,
@@ -20,12 +20,6 @@ export const ContextMenu: FC<IContextMenu> = ({
 }) => {
   const { getEdges, getNodes, addEdges, addNodes, deleteElements } =
     useReactFlow();
-
-  const onWrapperClick = (e: any) => {
-    if (e.target.id === "wrapper") {
-      closeHandler?.();
-    }
-  };
 
   const onDeleteNode = () => {
     const allNodes = getNodes();
@@ -180,42 +174,24 @@ export const ContextMenu: FC<IContextMenu> = ({
     closeHandler();
   };
 
-  if (open)
-    return (
-      <PortalWithState closeOnEsc onClose={closeHandler} defaultOpen={true}>
-        {({ portal }) =>
-          portal(
-            <div
-              className={classes.wrapper}
-              id="wrapper"
-              onClick={onWrapperClick}
-            >
-              <div
-                className={classes.container}
-                style={{ left: position.x, top: position.y }}
-              >
-                {deleteOptions.step && (
-                  <ContextMenuItem
-                    text="Delete step"
-                    icon={TrashIcon}
-                    isDangerous={true}
-                    action={onDeleteNode}
-                  />
-                )}
-                {deleteOptions.chain && (
-                  <ContextMenuItem
-                    text="Delete chain"
-                    icon={ChainIcon}
-                    isDangerous={true}
-                    action={onDeleteChain}
-                  />
-                )}
-              </div>
-            </div>
-          )
-        }
-      </PortalWithState>
-    );
-
-  return null;
+  return (
+    <Popover position={position} closeHandler={closeHandler} open={open}>
+      {deleteOptions.step && (
+        <ContextMenuItem
+          text="Delete step"
+          icon={TrashIcon}
+          isDangerous={true}
+          action={onDeleteNode}
+        />
+      )}
+      {deleteOptions.chain && (
+        <ContextMenuItem
+          text="Delete chain"
+          icon={ChainIcon}
+          isDangerous={true}
+          action={onDeleteChain}
+        />
+      )}
+    </Popover>
+  );
 };
