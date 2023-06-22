@@ -64,6 +64,10 @@ export const TaskNode: FC<ITaskNode> = ({ id, type, xPos, yPos }) => {
           closeHandler={toggleOpenContext}
           position={contextPosition}
           nodeId={id}
+          deleteOptions={{
+            chain: isConnected,
+            step: true,
+          }}
         />
 
         <div

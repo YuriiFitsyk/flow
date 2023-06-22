@@ -16,6 +16,7 @@ export const ContextMenu: FC<IContextMenu> = ({
   closeHandler,
   position,
   nodeId,
+  deleteOptions,
 }) => {
   const { getEdges, getNodes, addEdges, addNodes, deleteElements } =
     useReactFlow();
@@ -193,18 +194,22 @@ export const ContextMenu: FC<IContextMenu> = ({
                 className={classes.container}
                 style={{ left: position.x, top: position.y }}
               >
-                <ContextMenuItem
-                  text="Delete step"
-                  icon={TrashIcon}
-                  isDangerous={true}
-                  action={onDeleteNode}
-                />
-                <ContextMenuItem
-                  text="Delete chain"
-                  icon={ChainIcon}
-                  isDangerous={true}
-                  action={onDeleteChain}
-                />
+                {deleteOptions.step && (
+                  <ContextMenuItem
+                    text="Delete step"
+                    icon={TrashIcon}
+                    isDangerous={true}
+                    action={onDeleteNode}
+                  />
+                )}
+                {deleteOptions.chain && (
+                  <ContextMenuItem
+                    text="Delete chain"
+                    icon={ChainIcon}
+                    isDangerous={true}
+                    action={onDeleteChain}
+                  />
+                )}
               </div>
             </div>
           )
