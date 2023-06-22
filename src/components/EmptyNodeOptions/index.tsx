@@ -4,15 +4,18 @@ import { IEmptyNodeOptions } from "./interface";
 import { initialNodes } from "../../utils/constants";
 // @ts-ignore
 import classes from "./styles.module.scss";
+import { Popover } from "../Popover";
 
 export const EmptyNodeOptions: FC<IEmptyNodeOptions> = ({
   id,
+  open,
   closeHandler,
+  position,
 }) => {
   const { addNodes, getNode, deleteElements, getEdges, addEdges, getNodes } =
     useReactFlow();
 
-  const onSelect = (type: "decisionNode" | "taskNode") => {
+  const onSelect = (type: "decisionNode" | "taskNode") => (_: any) => {
     const currentEdge = getEdges().find((e) => e.target === id);
     const currentNode = getNode(id);
 
@@ -32,18 +35,18 @@ export const EmptyNodeOptions: FC<IEmptyNodeOptions> = ({
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.option} onClick={() => onSelect("taskNode")}>
+    <Popover position={position} closeHandler={closeHandler} open={open}>
+      <div className={classes.option} onClick={onSelect("taskNode")}>
         <p className={classes.text}>Add Task</p>
       </div>
 
-      <div className={classes.option} onClick={() => onSelect("decisionNode")}>
+      <div className={classes.option} onClick={onSelect("decisionNode")}>
         <p className={classes.text}>Add Decision</p>
       </div>
 
       <div className={classes.option} onClick={onReset}>
         <p className={classes.text}>Reset</p>
       </div>
-    </div>
+    </Popover>
   );
 };

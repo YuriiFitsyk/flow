@@ -24,6 +24,7 @@ export const EmptyNode: FC<IEmptyNode> = memo(({ id }) => {
   const onOverlayClick = (e: any) => {
     if (e.target.id === "overlay") {
       toggleOpenOptions();
+      setContextPosition({ x: e.pageX, y: e.pageY });
     }
   };
 
@@ -38,10 +39,6 @@ export const EmptyNode: FC<IEmptyNode> = memo(({ id }) => {
         />
 
         <EmptyIcon />
-
-        {openOptions && (
-          <EmptyNodeOptions id={id} closeHandler={toggleOpenOptions} />
-        )}
 
         <div
           id="overlay"
@@ -58,6 +55,13 @@ export const EmptyNode: FC<IEmptyNode> = memo(({ id }) => {
           deleteOptions={{
             step: true,
           }}
+        />
+
+        <EmptyNodeOptions
+          id={id}
+          open={openOptions}
+          closeHandler={toggleOpenOptions}
+          position={contextPosition}
         />
       </div>
 

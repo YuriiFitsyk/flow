@@ -1,32 +1,23 @@
-.container {
-  border-radius: 8px;
-  background: #FFFFFF;
-  padding: 20px;
-  position: absolute;
-  z-index: 2;
-  right: -110px;
-  bottom: -130px;
-}
-
 .option {
-  width: 120px;
-  padding: 5px;
-  text-align: center;
-  border: 1px solid #727272;
-  border-radius: 10px;
-  color: #000;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  color: #000000D9;
+  cursor: pointer;
+  border-radius: 6px;
   transition: all 0.3s;
 
   &:hover {
-    border-color: #08979C;
-    color: #08979C
+    background-color: #eaeaea;
   }
 
-  &:not(:last-child) {
-    margin-bottom: 10px;
+  &:active {
+    background-color: #dedede;
   }
 }
 
 .text {
-  margin: 0
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
 }
